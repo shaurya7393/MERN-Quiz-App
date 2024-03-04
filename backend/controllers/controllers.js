@@ -2,6 +2,8 @@
 const Question= require("../models/questionModel.js")
 const {data,answers} = require("../database/Data.js");
 const Result = require("../models/resultModel.js");
+const jwt = require('jsonwebtoken');
+const userData = require("../models/UserData.js");
 
 // it is to get all questions
 const getQuestions = async (req, res) => {
@@ -51,7 +53,7 @@ const postResult = async (req, res) => {
     try{
         const {username,result,attempts,points,achieved}=req.body;
         if(!username && !result) throw new Error("Data not found");
-
+        
         await Result.create({ username, result, attempts, points, achieved })
         res.json("Result posted success")
     }
@@ -71,5 +73,41 @@ try{
    }
 };
 
+//signup and signin
 
-module.exports = { getQuestions,insertQuestions,deleteQuestions,getResult,postResult,deleteResult};
+const generateToken=(username)=>{
+    return jwt.sign({ username }, process.env.SECRET_KEY, { expiresIn: '1h' })
+}
+const userRegister=async(req,res)=>{
+    try{
+       const {username,password}=req.body;
+       if(!username || !password) throw Error;
+        const user = await userData.findOne({username});
+        if(user){
+            return res.status(500).json('user already exists');
+        }
+       await userData.create({username,password});
+       res.json('registered successfully');
+    }
+    catch(error){
+        res.status(500).json({ error: "failed to SignUp" })
+    }
+}
+const userLogin=async(req,res)=>{
+    try {
+        const { username, password } = req.body;
+        const user=await userData.findOne({ username, password });
+        
+        if(!user){
+            return res.status(401).json("Invalid username or password");
+        }
+        const token= generateToken(username);
+        res.json({token});
+    }
+    catch (error) {
+  
+        res.status(500).json({ error: "failed to loginIn" })
+    }
+}
+
+module.exports = { getQuestions, insertQuestions, deleteQuestions, getResult, postResult, deleteResult, userRegister, userLogin};

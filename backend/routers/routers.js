@@ -1,8 +1,10 @@
 const express = require('express');
-const { getQuestions, insertQuestions,deleteQuestions,getResult,postResult,deleteResult} = require('../controllers/controllers');
+const { getQuestions, insertQuestions,deleteQuestions,getResult,postResult,deleteResult,userRegister, userLogin} = require('../controllers/controllers');
 const router = express.Router()
 
 
+router.route('/signup').post(userRegister);
+router.route('/login').post(userLogin);
 
 router.route("/questions")
    .get(getQuestions)

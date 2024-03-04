@@ -1,21 +1,18 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
 import { resetAllQuestions } from '../redux/questionReducer';
 import { resetAllResult } from '../redux/resultReducer';
-import { answers } from './database/Data';
-import { combineSlices } from '@reduxjs/toolkit';
+
 import axios from "axios";
-// import { postResult } from './Api';
 
 const Result = () => {
   const dispatch = useDispatch();
   const quest = useSelector(state => state.questions.queue);
+  const answers = useSelector(state => state.questions.answers);
   const result = useSelector(state => state.result.result);
-  const state = useSelector(state => state);
   const { userId } = useSelector(state => state.result);
-  // console.log(userId);
-  // console.log(result);
+  
 
   const helperForAttemted = (result) => {
     return result.filter(item => item !== undefined);
@@ -44,7 +41,7 @@ const Result = () => {
   const userPublishResult = async (resultData) => {
     try {
       const res = await axios.post(`${process.env.REACT_APP_URL}/api/result`, resultData);
-      console.log(res.data); // Logging the response
+      // console.log(res.data); // Logging the response
       return res.data;
     } catch (error) {
       console.error("Error publishing result:", error);
@@ -52,10 +49,9 @@ const Result = () => {
     }
   }
 
-  useEffect(() => {
-    // Call userPublishResult when component mounts
+
     userPublishResult({ username: userId, attempts, points: earnedPoint, result, achieved: flag ? "Passed" : "Fail" });
-  }, []); // Empty dependency array to ensure it only runs once on mount
+  
 
 
   const resetAll = () => {

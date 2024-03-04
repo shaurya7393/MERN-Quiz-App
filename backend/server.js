@@ -5,8 +5,6 @@ const { connectDB } = require('./database/connect.js');
 
 const app = express();
 const routers = require("./routers/routers.js");
-const { getQuestions, insertQuestions, deleteQuestions, getResult, postResult, deleteResult } = require('./controllers/controllers.js');
-
 
 dotenv.config({ path: '.env' });
 

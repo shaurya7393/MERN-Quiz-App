@@ -1,68 +1,5 @@
-// import React, { useEffect, useState } from 'react';
-// import Data from './database/Data';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { updateOptions } from '../redux/resultReducer';
+import React, { useEffect} from 'react';
 
-// const Questions = ({ onCheck, selectedOption, setSelectedOption, allquestions }) => {
-//   const dispatch = useDispatch();
-//   const state = useSelector((state) => state.questions.trace);
-//   const result = useSelector(state => state.result.result);
-//   const { trace } = useSelector((state) => state.questions);
-
-//   // useSelector((state)=>console.log(state));
-
-//   // const question = Data[state];
-//   // console.log(allquestions);
-//   const question = allquestions[state];
-
-//   useEffect(() => {
-//     // console.log({ trace, selectedOption });
-//     dispatch(updateOptions({ trace, selectedOption }));
-//   }, [selectedOption]);
-
-//   const handleOptionChange = (optionIndex) => {
-//     setSelectedOption(optionIndex);
-//     onCheck(optionIndex);
-//     dispatch(updateOptions({ trace, selectedOption }));
-//     // console.log({ trace, selectedOption });
-//   };
-
-//   return (
-//     <div>
-//       <h2 className='text-2xl pb-3'>
-//         {question.id}. {question.question}
-//       </h2>
-//       <ul>
-//         {question.options.map((quest, idx) => (
-//           <li key={idx} className='text-xl'>
-//             <input
-//               type='radio'
-//               value={idx}
-//               name="options"
-//               // className=''
-//               checked={selectedOption === idx || result[trace] == idx}
-//               id={`q-${idx}-option`}
-//               onChange={() => handleOptionChange(idx)}
-//             />
-//             <label htmlFor={`q-${idx}-option`}
-//               className={selectedOption === idx || result[trace] == idx ? ' bg-green-600' : ''}>
-//               {quest}
-//             </label>
-//           </li>
-//         ))}
-//       </ul>
-//     </div>
-//   );
-// };
-
-// export default Questions;
-
-
-
-
-
-import React, { useEffect, useState } from 'react';
-import Data from './database/Data';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateOptions } from '../redux/resultReducer';
 
@@ -71,15 +8,13 @@ const Questions = ({ onCheck, selectedOption, setSelectedOption, allquestions })
   const state = useSelector((state) => state.questions.trace);
   const result = useSelector(state => state.result.result);
   const { trace } = useSelector((state) => state.questions);
+  
 
-  // useSelector((state)=>console.log(state));
 
-  // const question = Data[state];
-  // console.log(allquestions);
   const question = allquestions[state];
 
   useEffect(() => {
-    // console.log({ trace, selectedOption });
+    
     dispatch(updateOptions({ trace, selectedOption }));
   }, [selectedOption]);
 
@@ -87,7 +22,7 @@ const Questions = ({ onCheck, selectedOption, setSelectedOption, allquestions })
     setSelectedOption(optionIndex);
     onCheck(optionIndex);
     dispatch(updateOptions({ trace, selectedOption }));
-    // console.log({ trace, selectedOption });
+    
   };
 
   return (

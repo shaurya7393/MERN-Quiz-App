@@ -4,23 +4,21 @@ import {useSelector,useDispatch} from 'react-redux';
 
 import { moveNextAction, movePrevAction, startExam } from '../redux/questionReducer';
 import { pushResultAction } from '../redux/resultReducer';
-import {Navigate, useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import { getQuestions } from './Api';
 
 
 const Quiz = () => {
   const dispatch= useDispatch();
   const Navigate=useNavigate();
-  // const q1 = useSelector(state => state);  
-  // console.log(q1);
-  const userID = useSelector(state => state.result.userID);
+  
   const [selectedOption, setSelectedOption] = useState(undefined);
   const [allquestions,setAllquestions]=useState([]);
+  // const [allanswers, setAllanswers] = useState([]);
   const quest = useSelector(state => state.questions.queue);  
   const state = useSelector(state => state.questions.trace);
   const results=useSelector(state=>state.result.result);
-  //  console.log(userID);
-  // console.log(stat);
+  
 
 
   const onPrev = () => {
@@ -43,37 +41,32 @@ const Quiz = () => {
       }
     }
   
-    if (state + 1 == quest.length) return; 
+    if (state + 1 === quest.length) return; 
     setSelectedOption(undefined); 
     dispatch(moveNextAction());
     }
-  // console.log(selectedOption);
   
 const onCheck=(index)=>{
-  // console.log(index);
-  setSelectedOption(index);
-  
+  setSelectedOption(index);  
 }
 
-if(results.length && results.length==quest.length){
+if(results.length && results.length===quest.length){
   Navigate(`/result`);
 }
-const {queue}=useSelector(state=>state.questions);
-  // console.log(queue);
+  
   useEffect(()=>{
      const fetchQuestions=async()=>{
-      // const question=await Data;
+      
       const res= await getQuestions(`${process.env.REACT_APP_URL}/api/questions`)
       const data=res.data;
-      // console.log(data);
       const [{questions,answers}]= data;
       setAllquestions(questions);
-
+      //  setAllquestions(answer);
+        
        dispatch(startExam({question: questions,answers}));
      }
      fetchQuestions();
-  },[])
-  // console.log(allquestions);
+  })
   return (
     <div className='flex flex-col items-center'>
       <div>
